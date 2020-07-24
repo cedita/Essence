@@ -37,5 +37,35 @@ namespace Cedita.Essence.Extensions
 
             return default;
         }
+
+        /// <summary>
+        /// Check if a Type is assignable from a generic type.
+        /// </summary>
+        /// <param name="type">Type to work with.</param>
+        /// <param name="genericType">Generic type to attempt to match.</param>
+        /// <returns>True if assignable, false otherwise.</returns>
+        public static bool IsAssignableFromGenericType(this Type type, Type genericType)
+        {
+            if (type.IsAssignableFrom(genericType))
+            {
+                return true;
+            }
+
+            var interfaceTypes = type.GetInterfaces();
+            foreach (var interfaceType in interfaceTypes)
+            {
+                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == genericType)
+                {
+                    return true;
+                }
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+            {
+                return true;
+            }
+
+            return type.BaseType?.IsAssignableFromGenericType(genericType) ?? false;
+        }
     }
 }

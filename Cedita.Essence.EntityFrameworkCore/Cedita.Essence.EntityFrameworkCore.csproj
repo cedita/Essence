@@ -6,19 +6,19 @@
     <Title>Cedita Essence Entity Framework Core</Title>
     <Authors>Cedita Ltd</Authors>
     <Company>Cedita Ltd</Company>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <CodeAnalysisRuleSet>..\Cedita.ruleset</CodeAnalysisRuleSet>
     <PackageIconUrl>https://www.cedita.com/nuget.png</PackageIconUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://www.github.com/cedita/Essence</RepositoryUrl>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Summary>Cedita Essence - Entity Framework Core Extensions</Summary>
     <Description>Essence.EntityFrameworkCore provides extensions to the Entity Framework Core for Audits and more. Continually updated with new features and bugfixes as necessary, commercially supported from Cedita.</Description>
     <PackageProjectUrl>https://www.github.com/cedita/Essence</PackageProjectUrl>
     <Copyright>Cedita Ltd</Copyright>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cedita.Essence.Abstractions\Cedita.Essence.Abstractions.csproj" />
+    <ProjectReference Include="..\Cedita.Essence\Cedita.Essence.csproj" />
   </ItemGroup>
 
 </Project>
