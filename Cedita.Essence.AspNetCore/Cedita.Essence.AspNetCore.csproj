@@ -12,19 +12,20 @@
     <PackageIconUrl>https://www.cedita.com/nuget.png</PackageIconUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://www.github.com/cedita/Essence</RepositoryUrl>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Summary>Cedita Essence - ASP.NET Core Web Extensions</Summary>
     <Description>Essence.AspNetCore provides a series of extensions and tag helpers to aid the ASP.NET Core MVC Development cycle. Continually updated with new features and bugfixes as necessary, commercially supported from Cedita.</Description>
     <PackageProjectUrl>https://www.github.com/cedita/Essence</PackageProjectUrl>
     <Copyright>Cedita Ltd</Copyright>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
@@ -41,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cedita.Essence.Abstractions\Cedita.Essence.Abstractions.csproj" />
+    <ProjectReference Include="..\Cedita.Essence\Cedita.Essence.csproj" />
   </ItemGroup>
   
   <ItemGroup>

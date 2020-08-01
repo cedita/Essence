@@ -12,13 +12,13 @@
     <PackageIconUrl>https://www.cedita.com/nuget.png</PackageIconUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://www.github.com/cedita/Essence</RepositoryUrl>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Summary>Essence is a set of base classes and interfaces that can be used to build generic applications and components compatible with Cedita applications using a common shared, extensible platform.</Summary>
     <Description>Essence is used by Cedita when creating new applications that follow certain standards of development and practices. Continually updated with new features and bugfixes as necessary, commercially supported from Cedita.</Description>
     <PackageProjectUrl>https://www.github.com/cedita/Essence</PackageProjectUrl>
     <Copyright>Cedita Ltd</Copyright>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
