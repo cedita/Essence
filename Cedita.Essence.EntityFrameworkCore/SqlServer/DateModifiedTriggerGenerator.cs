@@ -5,7 +5,7 @@ using Cedita.Essence.EntityFrameworkCore.Audit;
 using Cedita.Essence.Extensions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Cedita.Essence.EntityFrameworkCore
+namespace Cedita.Essence.EntityFrameworkCore.SqlServer
 {
     public static class DateModifiedTriggerGenerator
     {
