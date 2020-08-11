@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,12 +56,16 @@ namespace Cedita.Essence.DependencyInjection
 
             foreach (var typeDescriptor in typesToInject)
             {
-                var interfacesToImplement = typeDescriptor.Type.GetTypeInfo().ImplementedInterfaces.Where(t => t != typeof(IDisposable) && t.IsPublic && !t.IsNested);
+                IEnumerable<Type> interfacesToImplement;
 
                 // Do we need to override these interfaces?
                 if (typeDescriptor.Implements != null && typeDescriptor.Implements.Count() > 0)
                 {
                     interfacesToImplement = typeDescriptor.Implements;
+                }
+                else
+                {
+                    interfacesToImplement = typeDescriptor.Type.GetTypeInfo().ImplementedInterfaces.Where(t => t != typeof(IDisposable) && t.IsPublic && !t.IsNested);
                 }
 
                 // If there are no interfaces, self-implement
@@ -71,7 +76,8 @@ namespace Cedita.Essence.DependencyInjection
 
                 typeDescriptor.Implements = interfacesToImplement;
 
-                foreach (var interfaceType in interfacesToImplement) {
+                foreach (var interfaceType in interfacesToImplement)
+                {
                     services.Add(new ServiceDescriptor(interfaceType, typeDescriptor.Type, typeDescriptor.Lifetime));
                 }
 
