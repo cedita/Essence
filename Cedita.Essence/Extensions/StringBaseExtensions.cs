@@ -217,5 +217,21 @@ namespace Cedita.Essence.Extensions
 
             return count;
         }
+
+        /// <summary>
+        /// Returns the string, or <paramref name="defaultValue"/> if null or whitespace.
+        /// </summary>
+        /// <param name="str">String to work with.</param>
+        /// <param name="defaultValue">Default value to return.</param>
+        /// <returns><paramref name="str"/>, or <paramref name="defaultValue"/> if null or empty.</returns>
+        public static string OrDefault(this string str, string defaultValue)
+        {
+            if (str.IsNullOrWhitespace())
+            {
+                return defaultValue;
+            }
+
+            return str;
+        }
     }
 }
