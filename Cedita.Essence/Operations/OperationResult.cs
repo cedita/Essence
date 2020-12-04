@@ -13,7 +13,7 @@ namespace Cedita.Essence.Operations
     {
         public static readonly OperationResult Success = new OperationResult { Succeeded = true };
 
-        private List<OperationError> errors = new List<OperationError>();
+        protected List<OperationError> errors = new List<OperationError>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the operation was successful.
@@ -42,6 +42,21 @@ namespace Cedita.Essence.Operations
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Create an instance of <see cref="OperationResult"/> representing a failed operation with a list of
+        /// <paramref name="errors"/> if applicable.
+        /// </summary>
+        /// <param name="errors">A list of <see cref="OperationError"/>s which caused the operation to fail.</param>
+        /// <returns>An <see cref="OperationResult"/> indicating a failed operation, with a list of <paramref name="errors"/> if applicable.</returns>
+        public static OperationResult Failure(IEnumerable<OperationError> errors)
+        {
+            return new OperationResult
+            {
+                Succeeded = false,
+                errors = errors.ToList(),
+            };
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Cedita.Essence.AspNetCore.TagHelpers
@@ -12,8 +13,8 @@ namespace Cedita.Essence.AspNetCore.TagHelpers
     {
         private const string TagAttribute = "remove-if-*";
 
-        public RemoveIfTagHelper(IHttpContextAccessor httpContextAccessor, IOptions<EssenceTagHelperOptions> options)
-            : base(httpContextAccessor)
+        public RemoveIfTagHelper(IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IOptions<EssenceTagHelperOptions> options)
+            : base(httpContextAccessor, loggerFactory, options)
         {
             RemoveIfOperator = options.Value.DefaultOperatorMode;
             RemoveIfMode = options.Value.DefaultComparisonMode;

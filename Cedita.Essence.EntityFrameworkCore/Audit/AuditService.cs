@@ -11,12 +11,12 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
     /// Audit Service to automatically audit changes on an entity within the <typeparamref name="TContext"/>.
     /// </summary>
     /// <typeparam name="TContext">Context Type.</typeparam>
-    /// <typeparam name="TKey">Database Key Type.</typeparam>
+    /// <typeparam name="TUserKey">Database Key Type.</typeparam>
     /// <typeparam name="TAuditEntity">Audit Entry used in DbContext.</typeparam>
-    public class AuditService<TContext, TKey, TAuditEntity> : IAuditService<TContext, TKey, TAuditEntity>
+    public class AuditService<TContext, TUserKey, TAuditEntity> : IAuditService
         where TContext : DbContext
-        where TKey : IComparable<TKey>
-        where TAuditEntity : class, IEntityAudit<TKey>, new()
+        where TUserKey : IComparable<TUserKey>
+        where TAuditEntity : class, IEntityAudit<TUserKey>, new()
     {
         private readonly DbSet<TAuditEntity> dbSet;
 
@@ -57,7 +57,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
             where TEntity : class
         {
             var tableName = GetTableName(typeof(TEntity));
-            var primaryKey = (TKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
+            var primaryKey = (TUserKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
             var auditDate = DateTimeOffset.Now;
 
             object userId = null;
@@ -83,7 +83,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
                         Table = tableName,
                         TableId = primaryKey,
                         Type = AuditType.Audit,
-                        UserId = (TKey)userId,
+                        UserId = (TUserKey)userId,
                         ColumnName = changedProp.GetColumnName(),
                         From = originalValue?.ToString(),
                         To = currentValue?.ToString(),
@@ -99,12 +99,12 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
             where TEntity : class
         {
             var tableName = GetTableName(typeof(TEntity));
-            var primaryKey = (TKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
+            var primaryKey = (TUserKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
 
             object userId = null;
             if (UserIdProvider.HasCurrentUser())
             {
-                userId = (TKey)UserIdProvider.GetCurrentUserId();
+                userId = (TUserKey)UserIdProvider.GetCurrentUserId();
             }
 
             dbSet.Add(new TAuditEntity
@@ -112,7 +112,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
                 Table = tableName,
                 TableId = primaryKey,
                 Type = AuditType.Comment,
-                UserId = (TKey)userId,
+                UserId = (TUserKey)userId,
                 Note = note,
                 DateAudit = DateTimeOffset.Now,
                 Metadata = metadata,
@@ -124,12 +124,12 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
             where TEntity : class
         {
             var tableName = GetTableName(typeof(TEntity));
-            var primaryKey = (TKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
+            var primaryKey = (TUserKey)entry.CurrentValues[GetPrimaryKeyColumnName(typeof(TEntity))];
 
             object userId = null;
             if (UserIdProvider.HasCurrentUser())
             {
-                userId = (TKey)UserIdProvider.GetCurrentUserId();
+                userId = (TUserKey)UserIdProvider.GetCurrentUserId();
             }
 
             dbSet.Add(new TAuditEntity
@@ -137,7 +137,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
                 Table = tableName,
                 TableId = primaryKey,
                 Type = AuditType.Log,
-                UserId = (TKey)userId,
+                UserId = (TUserKey)userId,
                 Note = note,
                 DateAudit = DateTimeOffset.Now,
                 Metadata = metadata,

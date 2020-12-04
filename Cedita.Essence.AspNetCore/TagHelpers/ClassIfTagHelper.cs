@@ -4,6 +4,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Cedita.Essence.AspNetCore.TagHelpers
@@ -13,8 +14,8 @@ namespace Cedita.Essence.AspNetCore.TagHelpers
     {
         private const string TagAttribute = "class-if-*";
 
-        public ClassIfTagHelper(IHttpContextAccessor httpContextAccessor, IOptions<EssenceTagHelperOptions> options)
-            : base(httpContextAccessor)
+        public ClassIfTagHelper(IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IOptions<EssenceTagHelperOptions> options)
+            : base(httpContextAccessor, loggerFactory, options)
         {
             ClassIfOperator = options.Value.DefaultOperatorMode;
             ClassIfMode = options.Value.DefaultComparisonMode;

@@ -10,15 +10,15 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
     /// <summary>
     /// EntityAudit type for EF Core configured.
     /// </summary>
-    /// <typeparam name="TKey">Default Key type of tables.</typeparam>
+    /// <typeparam name="TUserKey">Default Key type of tables.</typeparam>
     /// <typeparam name="TUser">User Entity Type for link table (eg. IdentityUser).</typeparam>
-    public class EntityAudit<TKey, TUser> : IEntityAudit<TKey>
-        where TKey : IComparable<TKey>
+    public class EntityAudit<TUserKey, TUser> : IEntityAudit<TUserKey>
+        where TUserKey : IComparable<TUserKey>
     {
         /// <summary>
         /// Gets or sets entity ID.
         /// </summary>
-        public TKey Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets table Name of related Entity.
@@ -34,7 +34,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
         /// <summary>
         /// Gets or sets table ID (Primary Key) of related Entity.
         /// </summary>
-        public TKey TableId { get; set; }
+        public TUserKey TableId { get; set; }
 
         /// <summary>
         /// Gets or sets navigation to User for referential integrity.
@@ -45,7 +45,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
         /// <summary>
         /// Gets or sets user ID (Primary Key) of User.
         /// </summary>
-        public TKey UserId { get; set; }
+        public TUserKey UserId { get; set; }
 
         /// <summary>
         /// Gets or sets type of Audit.

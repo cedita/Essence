@@ -14,11 +14,13 @@ namespace Cedita.Essence.AspNetCore.Security
     public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
     {
         private readonly IApiKeyProvider apiKeyProvider;
+        private readonly ILogger<ApiKeyAuthenticationHandler> logger;
 
         public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IApiKeyProvider apiKeyProvider)
             : base(options, logger, encoder, clock)
         {
             this.apiKeyProvider = apiKeyProvider;
+            this.logger = logger.CreateLogger<ApiKeyAuthenticationHandler>();
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -44,6 +46,7 @@ namespace Cedita.Essence.AspNetCore.Security
 
             if (apiKey.IsNullOrWhitespace())
             {
+                logger.LogDebug("Could not retrieve API Key from header or query (as configured).");
                 return AuthenticateResult.NoResult();
             }
 
@@ -51,6 +54,7 @@ namespace Cedita.Essence.AspNetCore.Security
 
             if (actualApiKey == null)
             {
+                logger.LogDebug($"API Key {apiKey} was not valid.");
                 return AuthenticateResult.Fail("Invalid API Key.");
             }
 
@@ -59,7 +63,7 @@ namespace Cedita.Essence.AspNetCore.Security
                 new Claim(ClaimTypes.NameIdentifier, actualApiKey.UserId),
             };
 
-            if (actualApiKey.AdditionalClaims != null && actualApiKey.AdditionalClaims.Count() > 0)
+            if (actualApiKey.AdditionalClaims != null && actualApiKey.AdditionalClaims.Any())
             {
                 claims = claims.Concat(actualApiKey.AdditionalClaims);
             }
@@ -68,8 +72,14 @@ namespace Cedita.Essence.AspNetCore.Security
                 new ClaimsPrincipal(
                     new List<ClaimsIdentity>
                     {
-                        new ClaimsIdentity(claims, Options.Scheme),
+                        new ClaimsIdentity(
+                            claims,
+                            Options.Scheme,
+                            Options.NameClaimType,
+                            Options.RoleClaimType),
                     }), Options.Scheme);
+
+            logger.LogDebug("API Key.");
 
             return AuthenticateResult.Success(authenticationTicket);
         }

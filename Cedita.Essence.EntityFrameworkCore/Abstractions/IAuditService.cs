@@ -11,7 +11,7 @@ namespace Cedita.Essence.EntityFrameworkCore.Abstractions
     /// <typeparam name="TContext">Context Type.</typeparam>
     /// <typeparam name="TKey">Database Key Type.</typeparam>
     /// <typeparam name="TAuditEntity">Audit Entry used in DbContext.</typeparam>
-    public interface IAuditService<TContext, TKey, TAuditEntity>
+    public interface IAuditService
     {
         /// <summary>
         /// Automatically audit changes against an entity in to the database context.

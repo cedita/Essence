@@ -22,6 +22,16 @@ namespace Cedita.Essence.AspNetCore
         public string ApiKeyQueryString { get; set; } = "apiKey";
 
         /// <summary>
+        /// Gets or Sets the Claim Type for User Name when creating ClaimsIdentity.
+        /// </summary>
+        public string NameClaimType { get; set; } = "name";
+
+        /// <summary>
+        /// Gets or Sets the Claim Type for Role(s) when creating ClaimsIdentity.
+        /// </summary>
+        public string RoleClaimType { get; set; } = "role";
+
+        /// <summary>
         /// Gets or sets a value indicating whether to enable API Key Authentication by a Header..
         /// </summary>
         public bool EnableHeaderAuthentication { get; set; } = true;

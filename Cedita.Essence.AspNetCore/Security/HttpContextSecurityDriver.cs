@@ -2,8 +2,11 @@
 // Licensed under the Apache License, Version 2.0.
 
 using System;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Cedita.Essence.Abstractions.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace Cedita.Essence.AspNetCore.Security
@@ -46,6 +49,26 @@ namespace Cedita.Essence.AspNetCore.Security
             }
 
             return (TResult)returnObj;
+        }
+
+        public async Task AddOrUpdateClaimAsync(string claimType, string claimValue)
+        {
+            var claimsIdentity = httpContext.User.Identities.FirstOrDefault();
+
+            if (claimsIdentity == null)
+            {
+                throw new Exception("ClaimsIdentity not found and can not be updated.");
+            }
+
+            if (claimsIdentity.HasClaim(m => m.Type == claimType))
+            {
+                var claim = claimsIdentity.Claims.First(m => m.Type == claimType);
+                claimsIdentity.RemoveClaim(claim);
+            }
+
+            claimsIdentity.AddClaim(new Claim(claimType, claimValue));
+
+            await httpContext.SignInAsync(httpContext.User);
         }
 
         public bool HasClaim(string claimType)

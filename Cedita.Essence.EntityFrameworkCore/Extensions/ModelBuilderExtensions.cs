@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Cedita.Essence.EntityFrameworkCore.Audit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -121,6 +122,53 @@ namespace Cedita.Essence.EntityFrameworkCore.Extensions
             }).ToArray();
 
             return ConfigureDeleteBehaviour(builder, deleteBehavior, excludedTypes);
+        }
+
+        /// <summary>
+        /// Configure Query Filter on all types that are not excluded to deny access.
+        /// </summary>
+        /// <param name="builder">Model Builder.</param>
+        /// <param name="excludedTypes">Types to exclude from change.</param>
+        /// <returns>ModelBuilder.</returns>
+        public static ModelBuilder ConfigureDenyQueryFilter(this ModelBuilder builder, params Type[] excludedTypes)
+        {
+            foreach (var entityType in builder.Model.GetEntityTypes().Select(m => m.ClrType).Except(excludedTypes))
+            {
+                builder.Entity(entityType, a => a.HasQueryFilter(CreateDenyFilterForType(entityType)));
+            }
+
+            return builder;
+        }
+
+        private static LambdaExpression CreateDenyFilterForType(Type type)
+        {
+            var returnTarget = Expression.Label(typeof(bool));
+            var param = Expression.Parameter(type, "m");
+            return Expression.Lambda(Expression.Return(returnTarget, Expression.Constant(false)), param);
+        }
+
+        /// <summary>
+        /// Configure Query Filter on all types that are not excluded to deny access, adding default Identity tables to the exclusion list.
+        /// </summary>
+        /// <typeparam name="TUser">Identity User Type.</typeparam>
+        /// <typeparam name="TKey">Identity Key type.</typeparam>
+        /// <param name="builder">Model Builder.</param>
+        /// <param name="excludedTypes">Types to exclude from change in addition to Identity types.</param>
+        /// <returns>ModelBuilder.</returns>
+        public static ModelBuilder ConfigureDenyQueryFilterExcludingIdentity<TUser, TKey>(this ModelBuilder builder, params Type[] excludedTypes)
+            where TKey : IEquatable<TKey>
+        {
+            excludedTypes = excludedTypes.Concat(new[] {
+                typeof(TUser),
+                typeof(IdentityRole<TKey>),
+                typeof(IdentityUserRole<TKey>),
+                typeof(IdentityUserClaim<TKey>),
+                typeof(IdentityUserLogin<TKey>),
+                typeof(IdentityUserToken<TKey>),
+                typeof(IdentityRoleClaim<TKey>),
+            }).ToArray();
+
+            return ConfigureDenyQueryFilter(builder, excludedTypes);
         }
     }
 }

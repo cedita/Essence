@@ -73,5 +73,13 @@ namespace Cedita.Essence.Tests
             Assert.True(" ".IsNullOrWhitespace());
             Assert.False("a".IsNullOrWhitespace());
         }
+
+        [Fact]
+        public void BasicOrDefaultTests()
+        {
+            Assert.Equal("aaaa", string.Empty.OrDefault("aaaa"));
+            Assert.Equal("aaaa", default(string).OrDefault("aaaa"));
+            Assert.Equal("bbbb", "bbbb".OrDefault("aaaa"));
+        }
     }
 }

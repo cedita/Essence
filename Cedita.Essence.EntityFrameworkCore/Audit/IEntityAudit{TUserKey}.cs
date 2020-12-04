@@ -9,13 +9,13 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
     /// Entity Audit Interface.
     /// </summary>
     /// <typeparam name="TKey">Database Key.</typeparam>
-    public interface IEntityAudit<TKey>
-        where TKey : IComparable<TKey>
+    public interface IEntityAudit<TUserKey>
+        where TUserKey : IComparable<TUserKey>
     {
         /// <summary>
         /// Gets or sets entity ID.
         /// </summary>
-        TKey Id { get; set; }
+        long Id { get; set; }
 
         /// <summary>
         /// Gets or sets table Name of related Entity.
@@ -30,12 +30,12 @@ namespace Cedita.Essence.EntityFrameworkCore.Audit
         /// <summary>
         /// Gets or sets table ID (Primary Key) of related Entity.
         /// </summary>
-        TKey TableId { get; set; }
+        TUserKey TableId { get; set; }
 
         /// <summary>
         /// Gets or sets user ID (Primary Key) of User.
         /// </summary>
-        TKey UserId { get; set; }
+        TUserKey UserId { get; set; }
 
         /// <summary>
         /// Gets or sets type of Audit.
