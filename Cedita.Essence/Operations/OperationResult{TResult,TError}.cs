@@ -25,7 +25,7 @@ namespace Cedita.Essence.Operations
         /// <param name="error">Typed Error.</param>
         /// <param name="errors">An optional array of <see cref="OperationError"/>s which caused the operation to fail.</param>
         /// <returns>An <see cref="OperationResult{TResult}"/> indicating a failed operation, with a list of <paramref name="errors"/> if applicable.</returns>
-        public static OperationResult<TResult> Failure(TError error, params OperationError[] errors)
+        public static OperationResult<TResult, TError> Failure(TError error, params OperationError[] errors)
         {
             var result = new OperationResult<TResult, TError> { Succeeded = false, Error = error };
             if (errors != null)
@@ -43,7 +43,7 @@ namespace Cedita.Essence.Operations
         /// <param name="error">Typed Error.</param>
         /// <param name="errors">A list of <see cref="OperationError"/>s which caused the operation to fail.</param>
         /// <returns>An <see cref="OperationResult{TResult}"/> indicating a failed operation, with a list of <paramref name="errors"/> if applicable.</returns>
-        public static OperationResult<TResult> Failure(TError error, IEnumerable<OperationError> errors)
+        public static OperationResult<TResult, TError> Failure(TError error, IEnumerable<OperationError> errors)
         {
             return new OperationResult<TResult, TError>
             {
