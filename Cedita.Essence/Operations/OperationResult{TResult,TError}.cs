@@ -7,25 +7,27 @@ using System.Linq;
 namespace Cedita.Essence.Operations
 {
     /// <summary>
-    /// Represents the result of an operation with a specified Result type.
+    /// Represents the result of an operation with a specified Result and Error type.
     /// </summary>
     /// <typeparam name="TResult">Type of Result.</typeparam>
-    public class OperationResult<TResult> : OperationResult
+    /// <typeparam name="TError">Type of Error.</typeparam>
+    public class OperationResult<TResult, TError> : OperationResult<TResult>
     {
         /// <summary>
-        /// Gets or sets the result of the Operation.
+        /// Gets or sets the error of the Operation.
         /// </summary>
-        public TResult Result { get; set; }
+        public TError Error { get; set; }
 
         /// <summary>
         /// Create an instance of <see cref="OperationResult{TResult}"/> representing a failed operation with a list of
         /// <paramref name="errors"/> if applicable.
         /// </summary>
+        /// <param name="error">Typed Error.</param>
         /// <param name="errors">An optional array of <see cref="OperationError"/>s which caused the operation to fail.</param>
         /// <returns>An <see cref="OperationResult{TResult}"/> indicating a failed operation, with a list of <paramref name="errors"/> if applicable.</returns>
-        public static new OperationResult<TResult> Failure(params OperationError[] errors)
+        public static OperationResult<TResult> Failure(TError error, params OperationError[] errors)
         {
-            var result = new OperationResult<TResult> { Succeeded = false };
+            var result = new OperationResult<TResult, TError> { Succeeded = false, Error = error };
             if (errors != null)
             {
                 result.errors.AddRange(errors);
@@ -35,16 +37,18 @@ namespace Cedita.Essence.Operations
         }
 
         /// <summary>
-        /// Create an instance of <see cref="OperationResult{TResult}"/> representing a failed operation with a list of
+        /// Create an instance of <see cref="OperationResult{TResult,TError}"/> representing a failed operation with a list of
         /// <paramref name="errors"/> if applicable.
         /// </summary>
+        /// <param name="error">Typed Error.</param>
         /// <param name="errors">A list of <see cref="OperationError"/>s which caused the operation to fail.</param>
         /// <returns>An <see cref="OperationResult{TResult}"/> indicating a failed operation, with a list of <paramref name="errors"/> if applicable.</returns>
-        public static new OperationResult<TResult> Failure(IEnumerable<OperationError> errors)
+        public static OperationResult<TResult> Failure(TError error, IEnumerable<OperationError> errors)
         {
-            return new OperationResult<TResult>
+            return new OperationResult<TResult, TError>
             {
                 Succeeded = false,
+                Error = error,
                 errors = errors.ToList(),
             };
         }
@@ -54,9 +58,9 @@ namespace Cedita.Essence.Operations
         /// </summary>
         /// <param name="value">Result value.</param>
         /// <returns>An <see cref="OperationResult{TResult}"/> indicating a successful operation, with a result value.</returns>
-        public static new OperationResult<TResult> Success(TResult value)
+        public static new OperationResult<TResult, TError> Success(TResult value)
         {
-            return new OperationResult<TResult>
+            return new OperationResult<TResult, TError>
             {
                 Succeeded = true,
                 Result = value,
